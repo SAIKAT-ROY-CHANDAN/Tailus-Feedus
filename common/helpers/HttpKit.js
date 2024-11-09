@@ -13,7 +13,18 @@ const HttpKit = {
     }
   },
 
+  getAllRecipes: async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/search.php?s=`);
+      return response.data.meals || [];
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+      throw error;
+    }
+  },
+
   searchRecipesByName: async (query) => {
+    console.log(query, 'name');
     try {
       const response = await axios.get(`${BASE_URL}/search.php`, {
         params: { s: query },
@@ -26,6 +37,7 @@ const HttpKit = {
   },
 
   searchRecipesByIngredient: async (ingredient) => {
+    console.log(query, 'ingredient');
     try {
       const response = await axios.get(`${BASE_URL}/filter.php`, {
         params: { i: ingredient },
