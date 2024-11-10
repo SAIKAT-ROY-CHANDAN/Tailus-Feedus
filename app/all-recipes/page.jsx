@@ -31,7 +31,7 @@ const AllRecipes = () => {
   if (error) return <div>Error loading recipes: {error.message}</div>;
 
   return (
-    <section>
+    <section className="pt-10">
       <div className="relative py-16">
         <div className="container relative m-auto px-6 text-gray-500 md:px-12">
           <div className="grid gap-6 md:mx-auto md:w-8/12 lg:w-full lg:grid-cols-3">

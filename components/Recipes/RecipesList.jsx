@@ -42,7 +42,7 @@ const RecipesList = () => {
   }, [data]);
 
   const handleSearch = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setSearchQuery(searchInput);
   };
 
@@ -51,7 +51,25 @@ const RecipesList = () => {
     setRecipeId(id);
   };
 
-  if (isLoading) return <div>Loading recipes...</div>;
+  if (isLoading)
+    return (
+  <div className="container relative m-auto px-6 text-gray-500 md:px-12">
+      <div className="grid gap-6 md:mx-auto md:grid-cols-2 lg:w-full xl:grid-cols-3">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <div
+            key={index}
+            className=" bg-white px-4 py-4 mb-4"
+          >
+            <div className="w-[400px] mb-4 h-[400px] bg-gray-300 animate-pulse" />
+            <div className="w-[290px] h-4 rounded-lg bg-gray-300 mb-4"></div>
+            <div className="w-[220px] h-4 rounded-lg bg-gray-300 mb-4"></div>
+            <div className="w-[200px] h-4 rounded-lg bg-gray-300 mb-4"></div>
+          </div>
+        ))}
+      </div>
+  </div>
+    );
+
   if (error) return <div>Error loading recipes: {error.message}</div>;
 
   return (
@@ -60,10 +78,8 @@ const RecipesList = () => {
         <h1 className="text-2xl font-bold">Top Recipes</h1>
         {/* Search form */}
         <div>
-          <div
-            className="w-full mt-12"
-          >
-            <div className="relative flex p-1 rounded-full bg-white   border border-yellow-200 shadow-md md:p-2">
+          <div className="w-full mt-12">
+            <div className="relative flex p-1 rounded-full bg-white border border-yellow-200 shadow-md md:p-2">
               <input
                 placeholder="Your favorite food"
                 className="w-full p-4 rounded-full outline-none bg-transparent "
