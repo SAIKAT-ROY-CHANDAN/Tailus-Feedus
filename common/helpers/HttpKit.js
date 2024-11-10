@@ -29,6 +29,7 @@ const HttpKit = {
       const response = await axios.get(`${BASE_URL}/search.php`, {
         params: { s: query },
       });
+      console.log(response.data.meals, 'byname');
       return response.data.meals || [];
     } catch (error) {
       console.error("Error fetching recipes by name:", error);
@@ -37,11 +38,11 @@ const HttpKit = {
   },
 
   searchRecipesByIngredient: async (ingredient) => {
-    console.log(query, 'ingredient');
     try {
       const response = await axios.get(`${BASE_URL}/filter.php`, {
         params: { i: ingredient },
       });
+      console.log(response.data.meals, 'byingredient');
       return response.data.meals || [];
     } catch (error) {
       console.error("Error fetching recipes by ingredient:", error);

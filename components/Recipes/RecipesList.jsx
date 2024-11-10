@@ -10,21 +10,39 @@ const RecipesList = () => {
   const [openDetails, setOpenDetails] = useState(false);
   const [recipeId, setRecipeId] = useState("");
   const [recipes, setRecipes] = useState([]);
-  const [searchInput, setSearchInput] = useState("abc");
+  const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState(null);
 
+  // const { data, isLoading, error } = useQuery({
+  //   queryKey: ["recipes"],
+  //   queryFn: HttpKit.getTopRecipes,
+  // });
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ["recipes"],
-    queryFn: HttpKit.getTopRecipes,
+    queryKey: ["recipes", searchQuery],
+    queryFn: async () => {
+      if (searchQuery) {
+        const nameSearchResults = await HttpKit.searchRecipesByName(
+          searchQuery
+        );
+        return nameSearchResults.length
+          ? nameSearchResults
+          : await HttpKit.searchRecipesByIngredient(searchQuery);
+      } else {
+        return HttpKit.getTopRecipes();
+      }
+    },
   });
 
   useEffect(() => {
     if (data) {
+      console.log("Recipe data received:", data);
       setRecipes(data);
     }
   }, [data]);
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault()
     setSearchQuery(searchInput);
   };
 
@@ -42,21 +60,24 @@ const RecipesList = () => {
         <h1 className="text-2xl font-bold">Top Recipes</h1>
         {/* Search form */}
         <div>
-          <form action="" className="w-full mt-12">
+          <div
+            className="w-full mt-12"
+          >
             <div className="relative flex p-1 rounded-full bg-white   border border-yellow-200 shadow-md md:p-2">
               <input
                 placeholder="Your favorite food"
                 className="w-full p-4 rounded-full outline-none bg-transparent "
                 type="text"
-                onChange={(e) =>
-                  setSearchInput((prev) => ({
-                    ...prev,
-                    value: e.target.value,
-                  }))
-                }
+                onChange={(e) => setSearchInput(e.target.value)}
+                // onChange={(e) =>
+                //   setSearchInput((prev) => ({
+                //     ...prev,
+                //     value: e.target.value,
+                //   }))
+                // }
               />
               <button
-                onClick={() => handleSearch()}
+                onClick={(e) => handleSearch(e)}
                 type="button"
                 title="Start buying"
                 className="ml-auto py-3 px-6 rounded-full text-center transition bg-gradient-to-b from-yellow-200 to-yellow-300 hover:to-red-300 active:from-yellow-400 focus:from-red-400 md:px-12"
@@ -74,7 +95,7 @@ const RecipesList = () => {
                 </svg>
               </button>
             </div>
-          </form>
+          </div>
         </div>
         <div className="relative py-16">
           <div className="container relative m-auto px-6 text-gray-500 md:px-12">
