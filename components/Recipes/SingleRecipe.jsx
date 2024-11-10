@@ -1,8 +1,8 @@
 "use client";
-import HttpKit from "@/common/helpers/HttpKit";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";
+import HttpKit from "../../common/helpers/HttpKit";
 
 const SingleRecipe = ({ id, setIsOpen }) => {
   const { data, isLoading, error } = useQuery({

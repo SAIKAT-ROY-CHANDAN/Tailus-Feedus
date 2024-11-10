@@ -1,6 +1,41 @@
 "use client";
 
+import { useLoginMutation } from "@/redux/api/baseApi";
+import { setToken } from "@/redux/slices/userSlice";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
+
 export const LoginInModal = ({ openModal, setOpenModal }) => {
+  const [login] = useLoginMutation();
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    try {
+      const response = await login({ email, password }).unwrap();
+      if (response?.token) {
+        dispatch(setToken({ token: response.token }));
+
+        toast.success("Login successful", {
+          duration: 4000,
+          style: { background: "#FBBF24", color: "white" },
+        });
+        
+      }
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.message || "Error submitting form", {
+        duration: 4000,
+        style: { background: "#F87171", color: "white" },
+      });
+    }
+  };
+
   return (
     <div className="mx-auto flex w-72 items-center justify-center">
       <div
@@ -17,9 +52,14 @@ export const LoginInModal = ({ openModal, setOpenModal }) => {
               : "-translate-y-20 opacity-0 duration-150"
           }`}
         >
-          <form className="px-5 pb-5 pt-3 lg:pb-10 lg:pt-5 lg:px-10">
+          <form
+            onSubmit={handleSubmit}
+            className="px-5 pb-5 pt-3 lg:pb-10 lg:pt-5 lg:px-10"
+          >
             <div className="flex justify-between items-center mb-8">
-              <h1 className="text-4xl backdrop-blur-sm font-semibold text-gray-800">Login</h1>
+              <h1 className="text-4xl backdrop-blur-sm font-semibold text-gray-800">
+                Login
+              </h1>
               <button type="button" onClick={() => setOpenModal(false)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -38,32 +78,39 @@ export const LoginInModal = ({ openModal, setOpenModal }) => {
               </button>
             </div>
             <div className="space-y-4">
-              <label htmlFor="email_navigate_ui_modal" className="block text-sm">
+              <label
+                htmlFor="email_navigate_ui_modal"
+                className="block text-sm"
+              >
                 Email
               </label>
               <div className="relative">
                 <input
                   id="email_navigate_ui_modal"
                   type="email"
+                  name="email"
                   placeholder="example@gmail.com"
                   className="block w-full rounded-lg p-3 pl-3 text-sm outline-none drop-shadow-md bg-white"
                 />
               </div>
-              <label htmlFor="password_navigate_ui_modal" className="block text-sm">
+              <label
+                htmlFor="password_navigate_ui_modal"
+                className="block text-sm"
+              >
                 Password
               </label>
               <div className="relative">
                 <input
                   id="password_navigate_ui_modal"
+                  name="password"
                   type="password"
                   placeholder="Password"
                   className="block w-full rounded-lg p-3 pl-3 outline-none text-sm drop-shadow-md bg-white"
                 />
               </div>
             </div>
-            {/* button type will be submit for handling form submission*/}
             <button
-              type="button"
+              type="submit"
               className="relative py-2.5 px-5 rounded-lg mt-6 bg-yellow-400 hover:bg-yellow-300 text-white drop-shadow-lg "
             >
               Login

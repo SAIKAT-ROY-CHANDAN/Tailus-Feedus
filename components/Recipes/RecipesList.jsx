@@ -1,10 +1,11 @@
 "use client";
-import HttpKit from "@/common/helpers/HttpKit";
+
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import RecipeCard from "./RecipeCard";
 import Modal from "../Modal";
 import SingleRecipe from "./SingleRecipe";
+import HttpKit from "../../common/helpers/HttpKit";
 
 const RecipesList = () => {
   const [openDetails, setOpenDetails] = useState(false);
@@ -12,11 +13,6 @@ const RecipesList = () => {
   const [recipes, setRecipes] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState(null);
-
-  // const { data, isLoading, error } = useQuery({
-  //   queryKey: ["recipes"],
-  //   queryFn: HttpKit.getTopRecipes,
-  // });
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["recipes", searchQuery],
@@ -36,7 +32,6 @@ const RecipesList = () => {
 
   useEffect(() => {
     if (data) {
-      console.log("Recipe data received:", data);
       setRecipes(data);
     }
   }, [data]);
@@ -53,21 +48,18 @@ const RecipesList = () => {
 
   if (isLoading)
     return (
-  <div className="container relative m-auto px-6 text-gray-500 md:px-12">
-      <div className="grid gap-6 md:mx-auto md:grid-cols-2 lg:w-full xl:grid-cols-3">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <div
-            key={index}
-            className=" bg-white px-4 py-4 mb-4"
-          >
-            <div className="w-[400px] mb-4 h-[400px] bg-gray-300 animate-pulse" />
-            <div className="w-[290px] h-4 rounded-lg bg-gray-300 mb-4"></div>
-            <div className="w-[220px] h-4 rounded-lg bg-gray-300 mb-4"></div>
-            <div className="w-[200px] h-4 rounded-lg bg-gray-300 mb-4"></div>
-          </div>
-        ))}
+      <div className="container relative m-auto px-6 text-gray-500 md:px-12">
+        <div className="grid gap-6 md:mx-auto md:grid-cols-2 lg:w-full xl:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div key={index} className=" bg-white px-4 py-4 mb-4">
+              <div className="w-[400px] mb-4 h-[400px] bg-gray-300 animate-pulse" />
+              <div className="w-[290px] h-4 rounded-lg bg-gray-300 mb-4"></div>
+              <div className="w-[220px] h-4 rounded-lg bg-gray-300 mb-4"></div>
+              <div className="w-[200px] h-4 rounded-lg bg-gray-300 mb-4"></div>
+            </div>
+          ))}
+        </div>
       </div>
-  </div>
     );
 
   if (error) return <div>Error loading recipes: {error.message}</div>;
