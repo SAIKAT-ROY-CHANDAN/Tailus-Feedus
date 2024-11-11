@@ -27,7 +27,7 @@ const AllRecipes = () => {
     setRecipeId(id);
   };
 
-  if (isLoading) return <div>Loading recipes...</div>;
+  if (isLoading) return <div className="flex items-center justify-center min-h-screen text-xl">Loading recipes...</div>;
   if (error) return <div>Error loading recipes: {error.message}</div>;
 
   return (

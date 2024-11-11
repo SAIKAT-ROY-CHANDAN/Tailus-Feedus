@@ -29,7 +29,7 @@ export const LoginInModal = ({ openModal, setOpenModal }) => {
       console.log(response);
     } catch (error) {
       console.log(error);
-      toast.error(error?.message || "Error submitting form", {
+      toast.error(error?.message || "Login Failed", {
         duration: 4000,
         style: { background: "#F87171", color: "white" },
       });

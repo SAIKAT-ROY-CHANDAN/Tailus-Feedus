@@ -1,12 +1,38 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LoginInModal } from "./Auth/LoginInModal";
 import { SignInModal } from "./Auth/SignInModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearToken,
+  selectSignUpSuccess,
+  selectToken,
+  setSignUpSuccess,
+} from "@/redux/slices/userSlice";
+import { toast } from "sonner";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const signUpSuccess = useSelector(selectSignUpSuccess);
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openSignUpModal, setOpenSignUpModal] = useState(false);
+  const token = useSelector(selectToken);
+
+  useEffect(() => {
+    if (signUpSuccess) {
+      setOpenLoginModal(true);
+      dispatch(setSignUpSuccess(false));
+    }
+  }, [signUpSuccess, dispatch]);
+
+  const handleLogout = () => {
+    dispatch(clearToken());
+    toast.success("Logged out successfully", {
+      duration: 4000,
+      style: { background: "#F87171", color: "white" },
+    });
+  };
 
   return (
     <nav className="fixed z-50 w-full bg-white  md:absolute md:bg-transparent">
@@ -77,24 +103,34 @@ const Navbar = () => {
             </div>
 
             <div className="w-full min-w-max space-y-2 border-yellow-200 lg:space-y-0 sm:w-max lg:border-l ">
-              <button
-                onClick={() => setOpenSignUpModal(true)}
-                type="button"
-                title="Start buying"
-                className="w-full py-3 px-6 text-center rounded-full transition active:bg-yellow-200   focus:bg-yellow-100 sm:w-max"
-              >
-                <span className="block text-yellow-800 font-semibold text-sm">
-                  Sign up
-                </span>
-              </button>
-              <button
-                onClick={() => setOpenLoginModal(true)}
-                type="button"
-                title="Start buying"
-                className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max"
-              >
-                <span>Login</span>
-              </button>
+              {token ? (
+                <button
+                  onClick={handleLogout}
+                  type="button"
+                  className="w-full py-3 px-6 text-center rounded-full transition bg-red-400 hover:bg-red-300 text-white sm:w-max"
+                >
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setOpenSignUpModal(true)}
+                    type="button"
+                    className="w-full py-3 px-6 text-center rounded-full transition active:bg-yellow-200 focus:bg-yellow-100 sm:w-max"
+                  >
+                    <span className="block text-yellow-800 font-semibold text-sm">
+                      Sign up
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => setOpenLoginModal(true)}
+                    type="button"
+                    className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max"
+                  >
+                    <span>Login</span>
+                  </button>
+                </>
+              )}
               <LoginInModal
                 openModal={openLoginModal}
                 setOpenModal={setOpenLoginModal}

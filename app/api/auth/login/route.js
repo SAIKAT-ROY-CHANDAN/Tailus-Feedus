@@ -18,7 +18,7 @@ export async function POST(request) {
 
     if (!user) {
       return NextResponse.json(
-        { error: "Invalid credential User" },
+        { error: "User is not found" },
         { status: 401 }
       );
     }
@@ -29,7 +29,7 @@ export async function POST(request) {
 
     if (!isPasswordCorrect) {
       return NextResponse.json(
-        { error: "Invalid credential" },
+        { error: "Password is incorrect" },
         { status: 401 }
       );
     }

@@ -1,9 +1,12 @@
 "use client";
 import { useRegisterMutation } from "@/redux/api/baseApi";
+import { setSignUpSuccess } from "@/redux/slices/userSlice";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
 export const SignInModal = ({ openModal, setOpenModal }) => {
   const [register] = useRegisterMutation();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,13 +18,17 @@ export const SignInModal = ({ openModal, setOpenModal }) => {
     try {
       const response = await register({ email, phone, password }).unwrap();
       if (response?.success) {
+        dispatch(setSignUpSuccess(true));
         toast.success(response?.message, {
           duration: 4000,
           style: { background: "#FBBF24", color: "white" },
         });
+
+        setOpenModal(false); 
       }
       console.log(response);
     } catch (err) {
+      console.log(err);
       toast.error(err?.message || "Error submitting form", {
         duration: 4000,
         style: { background: "#F87171", color: "white" },

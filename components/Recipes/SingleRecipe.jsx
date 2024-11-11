@@ -5,6 +5,7 @@ import React from "react";
 import HttpKit from "../../common/helpers/HttpKit";
 import { useDispatch } from "react-redux";
 import { addRecipeToCart } from "@/redux/slices/addToCartSlice";
+import { toast } from "sonner";
 
 const SingleRecipe = ({ id, setIsOpen }) => {
   const dispatch = useDispatch();
@@ -21,6 +22,16 @@ const SingleRecipe = ({ id, setIsOpen }) => {
         image: data.strMealThumb,
       };
       dispatch(addRecipeToCart(cartItem));
+
+      toast.success("Recipe added to cart!", {
+        autoClose: 3000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        style: {
+          backgroundColor: "rgba(234, 179, 8, 0.9)",
+          color: 'white'
+        },
+      });
     }
   };
 
@@ -41,7 +52,7 @@ const SingleRecipe = ({ id, setIsOpen }) => {
       <h2 className="text2xl font-semibold">{data?.strMeal}</h2>
       <button
         onClick={handleAddToCart}
-        className="bg-black/80 p-4 rounded-lg text-white"
+        className="bg-yellow-500/90 p-2 rounded-lg text-white font-semibold hover:bg-yellow-400/80"
       >
         Add to cart
       </button>
