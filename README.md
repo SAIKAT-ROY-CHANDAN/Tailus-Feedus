@@ -1,5 +1,7 @@
 # Recipe App
 
+![Banner](https://i.ibb.co/c1rSVd5/image.png)
+
 ## Description
 The Recipe App allows users to explore a variety of recipes, search by name or ingredients, and add recipes to a personal cart. The app uses the MealDB API to retrieve recipe data, and users can add their recipes in cart with or without an account.
 
@@ -22,5 +24,5 @@ The Recipe App allows users to explore a variety of recipes, search by name or i
 Total time spent: Approximately 10 hours. 
 
 ## Deployment
-- **Live Link**: https://tailus-feedus-jade.vercel.app/
-- **GitHub Repository**: https://github.com/SAIKAT-ROY-CHANDAN/Tailus-Feedus
+- **Live Link**: [https://tailus-feedus-jade.vercel.app/](https://tailus-feedus-jade.vercel.app/)
+- **GitHub Repository**: [https://github.com/SAIKAT-ROY-CHANDAN/Tailus-Feedus](https://github.com/SAIKAT-ROY-CHANDAN/Tailus-Feedus)
